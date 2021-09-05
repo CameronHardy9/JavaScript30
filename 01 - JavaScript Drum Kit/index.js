@@ -1,10 +1,13 @@
-let drumKeys = document.getElementsByClassName("key");
-let audio = document.getElementsByTagName("audio");
+const drumKeys = document.getElementsByClassName("key");
+const audio = document.getElementsByTagName("audio");
+
+drumKeys.forEach(key => key.addEventListener("transitionend", removeTransition));
 
 
-window.addEventListener("keydown", function (key) {
-    let audio = document.querySelector(`audio[data-key="${key.keyCode}"]`);
-    let drumKey = document.querySelector(`div[data-key="${key.keyCode}"]`);
+
+window.addEventListener("keydown", function (e) {
+    let audio = document.querySelector(`audio[data-key="${e.key}"]`);
+    let drumKey = document.querySelector(`div[data-key="${e.key}"]`);
     if (!audio) {
         return;
     }
@@ -12,3 +15,12 @@ window.addEventListener("keydown", function (key) {
     audio.currentTime = 0;
     audio.play();
 });
+
+
+function removeTransition(e) {
+    console.log(e.propertyName)
+    if (e.propertyName !== "transform") {
+        return;
+    }
+    this.classList.remove("playing");
+}
